@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useCallback } from "react";
 import "../styles/globals.css";
 
 /**
@@ -15,9 +15,12 @@ const ResumeSections = ({ sectionName, sectionFields, onChange }) => {
    * @param {*} fieldId The generic ID of the field.
    * @param {*} value The Input value associated with the HTML tag.
    */
-  const handleFieldChange = (fieldId, value) => {
-    onChange(fieldId, value);
-  };
+  const handleFieldChange = useCallback(
+    (fieldId, value) => {
+      onChange(fieldId, value);
+    },
+    [onChange]
+  );
 
   return (
     <section>
