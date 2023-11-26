@@ -53,6 +53,7 @@ const ResumeSections = ({ sectionName, sectionFields, onChange }) => {
                   <input
                     type={fields.type}
                     id={fields.id}
+                    data-testid={fields.id}
                     placeholder={fields.placeholder}
                     required={fields.required ?? false}
                     ref={(inputRef) =>
