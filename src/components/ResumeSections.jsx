@@ -28,9 +28,9 @@ const ResumeSections = ({ sectionName, sectionFields, onChange }) => {
         <h2>{sectionName}</h2>
         {/* Dynamically generating sections */}
         {sectionName === "Achievements"
-          ? sectionFields.map((fields) => {
+          ? sectionFields.map((fields, index) => {
               return (
-                <div className="achievements-paragraph">
+                <div key={index} className="achievements-paragraph">
                   <textarea
                     className="placeholder"
                     placeholder={fields.placeholder}
@@ -46,9 +46,9 @@ const ResumeSections = ({ sectionName, sectionFields, onChange }) => {
                 </div>
               );
             })
-          : sectionFields.map((fields) => {
+          : sectionFields.map((fields, index) => {
               return (
-                <>
+                <div key={index}>
                   <label>{fields.label}</label>
                   <input
                     type={fields.type}
@@ -62,7 +62,7 @@ const ResumeSections = ({ sectionName, sectionFields, onChange }) => {
                       )
                     }
                   />
-                </>
+                </div>
               );
             })}
       </div>

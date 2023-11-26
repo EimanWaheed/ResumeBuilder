@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Page, Text, View, Document } from "@react-pdf/renderer";
 import ResumeSections from "./ResumeSections";
 import ResumeHeader from "./ResumeHeader";
 
@@ -98,6 +100,47 @@ const ResumeLayout = () => {
     [setResumeData]
   );
 
+  const ResumeDocument = () => (
+    <Document>
+      <Page>
+        <View>
+          <Text>Education</Text>
+          {Object.entries(resumeData.education).map(([key, value]) => (
+            <Text key={key}>
+              {key}: {value}
+            </Text>
+          ))}
+        </View>
+        <View>
+          <Text>Work Details</Text>
+          {Object.entries(resumeData.work).map(([key, value]) => (
+            <Text key={key}>
+              {key}: {value}
+            </Text>
+          ))}
+        </View>
+        <View>
+          <Text>Achievements</Text>
+          {Object.entries(resumeData.achievements).map(([key, value]) => (
+            <Text key={key}>
+              {key}: {value}
+            </Text>
+          ))}
+        </View>
+      </Page>
+    </Document>
+  );
+
+  const generateResumePdf = () => {
+    return (
+      <PDFDownloadLink document={<ResumeDocument />} fileName="myresume.pdf">
+        {({ blob, url, loading, error }) =>
+          loading ? "Generating PDF..." : "Download PDF"
+        }
+      </PDFDownloadLink>
+    );
+  };
+
   return (
     <>
       <div style={{ "background-color": "#1f1b1b" }}>
@@ -123,7 +166,7 @@ const ResumeLayout = () => {
             onHandleInputChange("achievements", fieldId, value)
           }
         />
-        <button className="download-button">Download Resume</button>
+        <button className="download-button">{generateResumePdf()}</button>
       </div>
     </>
   );
