@@ -6,34 +6,24 @@ import { Page, Text, View, Document } from "@react-pdf/renderer";
  * @param {*} resumeData
  * @returns the downloadable link for the resume.
  */
-const PdfContent = ({ resumeData }) => {
+const PdfContent = ({ sectionsList, resumeData }) => {
   return (
     <Document>
       <Page>
-        <View>
-          <Text>Education</Text>
-          {Object.entries(resumeData.education)?.map(([key, value]) => (
-            <Text key={key}>
-              {key}: {value}
-            </Text>
-          ))}
-        </View>
-        <View>
-          <Text>Work Details</Text>
-          {Object.entries(resumeData.work)?.map(([key, value]) => (
-            <Text key={key}>
-              {key}: {value}
-            </Text>
-          ))}
-        </View>
-        <View>
-          <Text>Achievements</Text>
-          {Object.entries(resumeData.achievements)?.map(([key, value]) => (
-            <Text key={key}>
-              {key}: {value}
-            </Text>
-          ))}
-        </View>
+        {sectionsList?.map((section) => {
+          return (
+            <View>
+              <Text>{section.sectionName.toUpperCase()}</Text>
+              {Object.entries(resumeData[section.sectionName])?.map(
+                ([key, value]) => (
+                  <Text key={key}>
+                    {key}: {value}
+                  </Text>
+                )
+              )}
+            </View>
+          );
+        })}
       </Page>
     </Document>
   );

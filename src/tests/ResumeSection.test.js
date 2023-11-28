@@ -1,5 +1,5 @@
 import { render, waitFor, screen } from "@testing-library/react";
-import ResumeSections from "../components/ResumeSections";
+import ResumeSections from "../components/ResumeSectionLayout";
 
 const dummySectionFields = [
   {

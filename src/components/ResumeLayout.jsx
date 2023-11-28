@@ -1,11 +1,18 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useFieldsConfig } from "../hooks/useFieldsConfig";
-import ResumeSections from "./ResumeSections";
+import ResumeSectionLayout from "./ResumeSectionLayout";
 import ResumeHeader from "./ResumeHeader";
 import ResumeFooter from "./ResumeFooter";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const ResumeLayout = () => {
   const { educationFields, workFields, achievementFields } = useFieldsConfig();
+  const [sectionsList, setSectionOrder] = useState([
+    { sectionName: "education", sectionFields: educationFields },
+    { sectionName: "work", sectionFields: workFields },
+    { sectionName: "achievements", sectionFields: achievementFields },
+  ]);
 
   /**
    * Input refs associated with each section of resume.
@@ -29,35 +36,35 @@ const ResumeLayout = () => {
     [resumeInputRefs]
   );
 
+  /**
+   * Adds section from FromIndex to the ToIndex to reorder the elements.
+   * @param {*} fromIndex
+   * @param {*} toIndex
+   */
+  const moveSection = (fromIndex, toIndex) => {
+    const newOrder = [...sectionsList];
+    newOrder.splice(toIndex, 0, newOrder.splice(fromIndex, 1)[0]);
+    setSectionOrder(newOrder);
+  };
+
   return (
-    <>
+    <DndProvider backend={HTML5Backend}>
       <div style={{ "background-color": "#1f1b1b" }}>
         <ResumeHeader />
-        <ResumeSections
-          sectionName={"Education"}
-          sectionFields={educationFields}
-          onChange={(fieldId, value) =>
-            onHandleInputChange("education", fieldId, value)
-          }
+
+        <ResumeSectionLayout
+          sections={sectionsList}
+          moveSection={moveSection}
+          onHandleInputChange={onHandleInputChange}
         />
-        <ResumeSections
-          sectionName={"Work Details"}
-          sectionFields={workFields}
-          onChange={(fieldId, value) =>
-            onHandleInputChange("work", fieldId, value)
-          }
-        />
-        <ResumeSections
-          sectionName={"Achievements"}
-          sectionFields={achievementFields}
-          onChange={(fieldId, value) =>
-            onHandleInputChange("achievements", fieldId, value)
-          }
-        />
+
         {/* Section for Resume Footer */}
-        <ResumeFooter resumeData={resumeInputRefs.current}></ResumeFooter>
+        <ResumeFooter
+          sectionsList={sectionsList}
+          resumeData={resumeInputRefs.current}
+        ></ResumeFooter>
       </div>
-    </>
+    </DndProvider>
   );
 };
 

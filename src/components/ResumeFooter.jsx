@@ -8,14 +8,19 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
  * @param {*} generatePdfContent State handler for generating the updated pdf content.
  * @returns The generated Pdf.
  */
-const ResumeFooter = ({ resumeData }) => {
+const ResumeFooter = ({ sectionsList, resumeData }) => {
   const [pdfContent, setPdfContent] = useState(null);
 
   /**
    * Handler to generate PDF for the resume.
    */
   const generatePdfContent = () => {
-    setPdfContent(<PdfContent resumeData={resumeData}></PdfContent>);
+    setPdfContent(
+      <PdfContent
+        sectionsList={sectionsList}
+        resumeData={resumeData}
+      ></PdfContent>
+    );
   };
 
   return (
